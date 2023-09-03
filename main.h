@@ -1,6 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <stdio.h>
 #define PROMPT "Enter Entry: "
 
 typedef struct log_t
@@ -12,7 +13,7 @@ typedef struct log_t
 	struct log_t *prev;
 } log;
 
-log *log_init(char *msg);
+void log_write(FILE *file, log **head);
 void log_push(log **head, char *msg);
 void log_free(log *head);
 void log_print(log **head);

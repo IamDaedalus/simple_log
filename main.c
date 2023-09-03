@@ -7,26 +7,34 @@
 
 int main(void)
 {
+	FILE *file;
 	char *line = NULL;
 	size_t size = 0;
 	log *head = NULL;
 
+	file = fopen("simple.log", "a+");
+	if (file == NULL)
+	{
+		fprintf(stderr, "Couldn't work with saved file\n");
+		exit(EXIT_FAILURE);
+	}
+
 	while (1)
 	{
 		printf("%s", PROMPT);
-		if (getline(&line, &size, stdin) != -1)
-		{
-			line = strtok(line, " \n");
-			if (strncmp(line, "exit", 4) == 0)
-				break;
+		getline(&line, &size, stdin);
+		line = strtok(line, " \n");
 
-			log_push(&head, line);
-		}
+		if (strncmp(line, "exit", 4) == 0)
+			break;
+
+		log_push(&head, line);
 	}
 
 	free(line);
+	log_write(file, &head);
 
-	log_print(&head);
+	fclose(file);
 	log_free(head);
 
 	return 0;

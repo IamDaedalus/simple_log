@@ -39,6 +39,25 @@ void log_push(log **head, char *msg)
 	(*head) = new;
 }
 
+void log_write(FILE *file, log **head)
+{
+	log *cur = NULL;
+
+	if (head == NULL)
+	{
+		printf("Nothing to print");
+		return;
+	}
+
+	cur = *head;
+	while (cur)
+	{
+		fprintf(file, "\nLog: %s\nEntry#: %d\nDate: %s",
+				cur->log, cur->entry_num, cur->time_of_entry);
+		cur = cur->next;
+	}
+}
+
 void log_print(log **head)
 {
 	log *cur = NULL;
@@ -53,8 +72,8 @@ void log_print(log **head)
 	while (cur)
 	{
 		printf("\n");
-		printf("Log: %s\n", cur->log);
 		printf("Entry #: %d\n", cur->entry_num);
+		printf("Log: %s\n", cur->log);
 		printf("Time of Entry: %s", cur->time_of_entry);
 
 		cur = cur->next;
